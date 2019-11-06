@@ -1,0 +1,26 @@
+defaultTimeOut: 500 #customize the default timeout threshold
+
+## To inject faults into specific types of instructions:
+## (see all posible names in http://llvm.org/docs/LangRef.html). For include, you can also specify 'all'
+compileOption:
+    instSelMethod:
+      - insttype:
+          include:
+            - all
+    ## To use a location-based register selector to select targeting register:
+    regSelMethod: regloc
+    ## To select the destination register
+    regloc: dstreg
+
+    ## To incorporate the forward slice/backward slice of the selected instructions as injection targets: 
+    includeInjectionTrace: 
+        - forward # include forward trace of the selected instructions into fault injection targets
+        - backward # include forward trace of the selected instructions into fault injection targets
+
+runOption:
+    ## To inject a common hardware fault in all injection targets by random:
+    - run:
+        numOfRuns: 10 # run injection for 5 times
+        fi_type: bitflip
+        timeOut: 500 # specify a custom timeout threashold for only this experiment
+        verbose: True# prints return code summary at end of injection

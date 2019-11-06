@@ -1,0 +1,26 @@
+#-----------------------------------------------------------------------
+
+MINIFE_TYPES =  \
+	-DMINIFE_SCALAR=double   \
+	-DMINIFE_LOCAL_ORDINAL=int      \
+	-DMINIFE_GLOBAL_ORDINAL=int
+
+MINIFE_MATRIX_TYPE = -DMINIFE_CSR_MATRIX
+# MINIFE_MATRIX_TYPE = -DMINIFE_ELL_MATRIX
+
+#-----------------------------------------------------------------------
+
+CFLAGS = -g -O3 -mllvm -fi -mllvm -fi-funcs="*" -mllvm -fi-inst-types="*" -mllvm -fi-reg-types=dst -mllvm -fi-ff
+CXXFLAGS = -g -O3 -mllvm -fi -mllvm -fi-funcs="*" -mllvm -fi-inst-types="*" -mllvm -fi-reg-types=dst -mllvm -fi-ff
+
+CPPFLAGS = -I. -I../utils -I../fem $(MINIFE_TYPES) \
+	$(MINIFE_MATRIX_TYPE)
+
+LDFLAGS =
+LIBS=-lm -linject_ser
+
+CXX=$(HOME)/usr/local/bin/clang++
+CC=$(HOME)/usr/local/bin/clang
+
+include make_targets
+

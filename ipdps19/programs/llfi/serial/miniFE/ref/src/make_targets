@@ -1,0 +1,48 @@
+
+OBJS = \
+	BoxPartition.ll \
+	YAML_Doc.ll \
+	YAML_Element.ll
+
+UTIL_OBJS = \
+	param_utils.ll \
+	utils.ll \
+	mytimer.ll
+
+MAIN_OBJ = \
+	main.ll
+
+MINIFE_INFO = 1
+MINIFE_KERNELS = 0
+
+vpath %.cpp ../utils
+
+all:common_files generate_info miniFE.x
+
+miniFE.x:common_files $(MAIN_OBJ) $(OBJS) $(UTIL_OBJS) $(OPTIONAL_OBJS) *.hpp generate_info
+	$(LLFI_BUILD_ROOT)/llvm/bin/llvm-link -S $(MAIN_OBJ) $(OBJS) $(UTIL_OBJS) $(OPTIONAL_OBJS) -o miniFE.all.ll
+	${LLFI_BUILD_ROOT}/llvm/bin/opt -disable-opt -S miniFE.all.ll -o miniFE.x.ll
+	${LLFI_BUILD_ROOT}/llfi/bin/instrument --dir 'llfi' --cc c++ --readable miniFE.x.ll
+	$(INSTRUMENT) $(CXX) $(CXXFLAGS) $(CPPFLAGS) miniFE.x.ll -o miniFE.x $(LDFLAGS) $(OPTIONAL_LIBS) $(LIBS)
+
+common_files:
+	./get_common_files
+
+generate_info:
+	./generate_info_header "$(CXX)" "$(CXXFLAGS)" "miniFE" "MINIFE"
+
+test:all
+	./run_test
+
+%.ll:%.cpp *.hpp
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -DMINIFE_INFO=$(MINIFE_INFO) -DMINIFE_KERNELS=$(MINIFE_KERNELS) -emit-llvm -S -fno-use-cxa-atexit $<
+
+%.ll:%.c *.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -emit-llvm -S -fno-use-cxa-atexit $<
+
+clean:
+	rm -rf *.o *.a *.x *.linkinfo miniFE_info.hpp *.ll llfi*
+
+realclean: clean
+	rm -f gmon.out gprof.* *~ miniFE*.yaml *.TVD.* *.mtx* *.vec* minife_debug*
+
