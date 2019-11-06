@@ -12,8 +12,8 @@ optimizations for fast instrumentation and injection that make SAFIRE the
 fastest and most accurate tool for fault injection so far.  Compiling with
 SAFIRE produces an instrumented binary ready to interface with a dynamic
 library that implements an API of function hooks. Function hooks get
-information on the executed instruction and may trigger fault injection. A
-dynamic libraries can implement any instruction-based fault model to select
+information on the executed instruction and may trigger fault injection. 
+Dynamic libraries can implement any instruction-based fault model to select
 which instruction(s) to inject to, which operand(s), and which bit(s) to flip.
 
 ## Getting Started
@@ -39,9 +39,11 @@ The repo contains also a reference directory of the paper on SAFIRE presented at
 
 ### Build the SAFIRE LLVM compiler
 1. Clone the repo
+
 `git clone <repo url>`
 
 2. Change directory to llvm-3.9.0
+
 `cd llvm-3.9.0`
 
 3. Download clang-3.9.0 (http://releases.llvm.org/3.9.0/cfe-3.9.0.src.tar.xz) and decompress it in the llvm-3.9.0/tools/ sub-directory
@@ -51,18 +53,23 @@ tar -C tools/ -xf tools/cfe-3.9.0.src.tar.xz
 ```
 
 4. Create a directory for building, e.g., BUILD
+
 `mkdir BUILD`
 
 5. Change to the building directory
+
 `cd BUILD`
 
-6. Run cmake to boostrap the build proces and set the installation directory, e.g., 
+6. Run cmake to boostrap the build proces and set the installation directory, e.g.,
+
 `cmake -DCMAKE_INSTALL_PREFIX=$HOME/opt/safire -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLLVM_OPTIMIZED_TABLEGEN=ON -DLLVM_ENABLE_DOXYGEN=OFF ..`
 
 7. Run the build program to process cmake generated build files, e.g.,
+
 `make -j$(nproc)`
 
 8. Install the SAFIRE LLVM compiler binaries, e.g.,
+
 `make install`
 
 ### Use the SAFIRE LLVM compiler
@@ -138,7 +145,7 @@ There are examples of libraries implementing the single fault model for serial a
 
 ### Run a fault-injection experiment using SAFIRE and the single-fault model library
 
-The FI library we provide needs a dynamic instruction count to pool a random instruction to inject fault. For that, the library reads the dynamic target instruction counter for the file `fi-inscount.txt'. If the file is missing, our library implementation performs a boostrap run that does the counting without injecting faults. There are different example libraries depending on the whether targeting serial, multi-threaded, or multi-process (experimental) execution.
+The FI library we provide needs a dynamic instruction count to pool a random instruction to inject fault. For that, the library reads the dynamic target instruction counter for the file `fi-inscount.txt`. If the file is missing, our library implementation performs a boostrap run that does the counting without injecting faults. There are different example libraries depending on the whether targeting serial, multi-threaded, or multi-process (experimental) execution.
 The format of the file `fi-inscount.txt` for multi-threaded execution is:
 ```
 thread=X, fi_index=N
