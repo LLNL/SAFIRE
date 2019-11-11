@@ -138,7 +138,6 @@ void init()
     if( ( inj_fp = fopen(inject_fname, "r") ) ) {
         // reproduce injection
         printf("REPRODUCE INJECTION\n");
-        assert(0 && "Reproducing experiments is work-in-progress for parallel programs\n");
         fscanf(inj_fp, "thread=%d, fi_index=%"PRIu64", op=%"PRIu64", size=%"PRIu64", bitflip=%u", \
                 &fi_thread, &fi_index, &op_num, &op_size, &bit_pos);
         fprintf(stdout, "thread=%d, fi_index=%"PRIu64", op=%"PRIu64", size=%"PRIu64", bitflip=%u\n", \

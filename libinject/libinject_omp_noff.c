@@ -114,7 +114,7 @@ void init()
 {
     // XXX: First try to reproduce a specific injection, next try to read a target instruction for FI. If netheir holds, do a profiling run
     // This is specific injection, including operands, produced after a FI experiment
-    /*if( ( inj_fp = fopen(inject_fname, "r") ) ) {
+    if( ( inj_fp = fopen(inject_fname, "r") ) ) {
         // reproduce injection
         printf("REPRODUCE INJECTION\n");
         assert(0 && "Reproducing experiments is work-in-progress for parallel programs\n");
@@ -133,7 +133,7 @@ void init()
         action = DO_REPRODUCTION;
     }
     // This is targeted injection, selecting the instruction to run a random experiment
-    else*/ if ( ( tgt_fp = fopen(target_fname, "r") ) ) {
+    else if ( ( tgt_fp = fopen(target_fname, "r") ) ) {
         int ret = fscanf(tgt_fp, "thread=%d, fi_index=%"PRIu64"\n", &fi_thread, &fi_index);
         assert(ret == 2 && "fscanf failed to parse input\n");
         assert(fi_thread >= 0 && "fi_thread < 0\n");
