@@ -12,10 +12,10 @@ args = parser.parse_args()
 
 assert args.execmode in ['serial', 'omp', 'mpi', 'mpi+omp'], 'Valid execmodes are serial | omp | mpi | mpi+omp'
 
-# parse inscount and create refine-target.txt
+# parse inscount and create fi-target.txt
 if args.execmode == 'serial':
     print('serial')
-    with open('refine-inscount.txt','r') as f:
+    with open('fi-inscount.txt','r') as f:
         m = re.match('fi_index=(\d+)', f.read())
 
     num_insts = int(m.group(1))
@@ -25,12 +25,12 @@ if args.execmode == 'serial':
     print('target %d'%target)
     assert ( target >= 1) and (target <=num_insts), 'Random target %d < 1 or > num_insts %d'%(target, num_insts)
 
-    with open('refine-target.txt', 'w') as f:
+    with open('fi-target.txt', 'w') as f:
         f.write('fi_index=%d\n'%target)
 
 elif args.execmode == 'omp':
     print('omp')
-    with open('refine-inscount.txt','r') as f:
+    with open('fi-inscount.txt','r') as f:
         m = re.findall('thread=(\d+), fi_index=(\d+)', f.read())
         thread_insts = [ ( int(x), int(y) ) for (x,y) in m ]
 
@@ -52,16 +52,16 @@ elif args.execmode == 'omp':
         tot_inst_count += insts
 
     print('thread=%d, fi_index=%d\n'%( thread, fi_index ))
-    with open('refine-target.txt', 'w') as f2:
+    with open('fi-target.txt', 'w') as f2:
         f2.write('thread=%d, fi_index=%d\n'%( thread, fi_index ))
 
 elif args.execmode == 'mpi':
     print('mpi')
-    files = glob.glob('*.refine-inscount.txt')
+    files = glob.glob('*.fi-inscount.txt')
     rank_insts = []
     rank = 0
     for rank in range(0, len( files ) ):
-        with open('%d.refine-inscount.txt'%(rank),'r') as f:
+        with open('%d.fi-inscount.txt'%(rank),'r') as f:
                 m = re.match('\d+', f.read())
                 rank_insts.append( (rank, int(m[0])) )
 
@@ -83,17 +83,17 @@ elif args.execmode == 'mpi':
 
     print('rank=%d, fi_index=%d\n'%( rank, fi_index ))
 
-    with open('refine-target.txt', 'w') as f:
+    with open('fi-target.txt', 'w') as f:
         f.write('rank=%d, fi_index=%d\n'%( rank, fi_index ))
     print(rank_insts)
 
 elif args.execmode == 'mpi+omp':
     print('mpi+omp')
-    files = glob.glob('*.refine-inscount.txt')
+    files = glob.glob('*.fi-inscount.txt')
     rank_insts = []
     rank = 0
     for rank in range(0, len( files ) ):
-        with open('%d.refine-inscount.txt'%(rank),'r') as f:
+        with open('%d.fi-inscount.txt'%(rank),'r') as f:
                 m = re.findall('thread=(\d+), fi_index=(\d+)', f.read())
                 thread_insts = [ ( int(x), int(y) ) for (x,y) in m ]
                 rank_insts.append( ( rank, thread_insts ) )
@@ -121,7 +121,7 @@ elif args.execmode == 'mpi+omp':
         if targetFound:
             break
     print('rank=%d, thread=%d, fi_index=%d\n'%( rank, thread, fi_index ))
-    with open('refine-target.txt', 'w') as f:
+    with open('fi-target.txt', 'w') as f:
         f.write('rank=%d, thread=%d, fi_index=%d\n'%( rank, thread, fi_index ))
 
 else:
