@@ -228,7 +228,7 @@ Parallel and Distributed Processing Symposium (IPDPS), Rio de Janeiro, Brazil,
 
 ## License
 
-SAFIRE is distributed under the terms of the Apache License (Version 2.0) with LLVM exceptions. Other software that is part of this repository may be under a different license, docemented by the file LICENSE in its sub-directory.
+SAFIRE is distributed under the terms of the Apache License (Version 2.0) with LLVM exceptions. Other software that is part of this repository may be under a different license, documented by the file LICENSE in its sub-directory.
 
 All new contributions to SAFIRE must be under the Apache License (Version 2.0) with LLVM exceptions.
 
